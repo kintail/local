@@ -21,6 +21,7 @@ import Json.Decode as Decode exposing (Decoder)
 import Date exposing (Date)
 import Task exposing (Task)
 import Http
+import Kintail.Local as Local
 
 
 type File
@@ -90,7 +91,7 @@ read file =
             Http.request
                 { method = "POST"
                 , headers = []
-                , url = "https://kintail/local/file/read"
+                , url = Local.url "file/read"
                 , body = Http.jsonBody (encode file)
                 , expect = Http.expectString
                 , timeout = Nothing
@@ -138,7 +139,7 @@ write { contents, suggestedFilename } =
             Http.request
                 { method = "PUT"
                 , headers = []
-                , url = "//local/file/write"
+                , url = Local.url "file/write"
                 , body = Http.jsonBody encoded
                 , expect = Http.expectStringResponse handleResponse
                 , timeout = Nothing
