@@ -1,0 +1,18 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+    <script src="kintail-local.js"></script>
+  </head>
+  <body>
+    <div id="main"></div>
+    <script src="main.js"></script>
+    <script type="text/javascript">
+      var app = null
+      Kintail.Local.init().then(function() {
+        app = Elm.Main.embed(document.getElementById('main'))
+      })
+    </script>
+  </body>
+</html>
