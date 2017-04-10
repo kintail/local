@@ -39,8 +39,6 @@ if ('window' in self) {
         return notFound('File size does not match')
       }
       if (file.lastModified !== requestedFile.lastModified) {
-        console.log('file.lastModified:', file.lastModified)
-        console.log('requestedFile.lastModified', requestedFile.lastModified)
         return notFound('File last-modified time does not match')
       }
       if (file.type !== requestedFile.mimeType) {
@@ -83,11 +81,8 @@ if ('window' in self) {
 
     function registerServiceWorker() {
       return navigator.serviceWorker.register(thisFile).then(function(registration) {
-        console.log('Registered service worker')
         navigator.serviceWorker.addEventListener('message', function(event) {
-          console.log('Received message from service worker', event.data)
           handleRequest(event.data).then(function(response) {
-            console.log('Sending message back to service worker', response)
             event.ports[0].postMessage(response)
           })
         })
@@ -119,7 +114,6 @@ if ('window' in self) {
 
   function requestFromClient(clientId, request) {
     return clients.get(clientId).then(function(client) {
-      console.log('Found client', client)
       return new Promise(function(resolve, reject) {
         if (client !== undefined) {
           var messageChannel = new MessageChannel()
@@ -127,8 +121,6 @@ if ('window' in self) {
           messageChannel.port1.onmessage = function(event) {
             resolve(event.data)
           }
-
-          console.log('Posting request to client', request)
 
           client.postMessage(request, [messageChannel.port2])
         } else {
@@ -141,13 +133,10 @@ if ('window' in self) {
   self.addEventListener('fetch', function(event) {
     var request = event.request
     var url = request.url
-    console.log('Intercepting request', url)
     if (url.startsWith('https://kintail/local/')) {
       var path = url.slice(22)
-      console.log('path', path)
       event.respondWith(request.text().then(function(body) {
         var requestParameters = {path: path, body: body};
-        console.log('Requesting', requestParameters)
         return requestFromClient(event.clientId, requestParameters).then(function(response) {
           var headers = new Headers();
           headers.append('Content-Type', response.contentType);
