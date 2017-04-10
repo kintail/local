@@ -1,5 +1,7 @@
 if ('window' in self) {
   if ('serviceWorker' in navigator) {
+    var FileSaver = require('file-saver');
+
     function badRequest(description) {
       return Promise.resolve({status: 400, statusText: 'Bad Request', body: description})
     }
@@ -58,11 +60,22 @@ if ('window' in self) {
       })
     }
 
+    function saveFile(body) {
+      var parameters = JSON.parse(body)
+      var blob = new Blob([parameters.contents], {type: "text/plain; charset=utf-8"});
+      FileSaver.saveAs(blob, parameters.suggestedFilename);
+      return ok("")
+    }
+
     function handleRequest(request) {
-      if (request.path == 'file/read') {
-        return readFile(request.body)
-      } else {
-        return badRequest("Unrecognized request")
+      var body = request.body
+      switch (request.path) {
+        case 'file/read':
+          return readFile(body)
+        case 'file/save':
+          return saveFile(body)
+        default:
+          return badRequest("Unrecognized request")
       }
     }
 

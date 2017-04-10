@@ -25,6 +25,7 @@
   },
   "homepage": "https://github.com/kintail/local#readme",
   "devDependencies": {
+    "file-saver": "^1.3.3",
     "webpack": "^2.3.3"
   }
 }
