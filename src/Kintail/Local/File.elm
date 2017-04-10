@@ -2,14 +2,14 @@ module Kintail.Local.File
     exposing
         ( File
         , ReadError
-        , WriteError
+        , SaveError
         , name
         , sizeInBytes
         , lastModified
         , mimeType
         , chooser
         , read
-        , write
+        , save
         , selectedFiles
         )
 
@@ -39,8 +39,8 @@ type ReadError
     = ReadError
 
 
-type WriteError
-    = WriteError
+type SaveError
+    = SaveError
 
 
 name : File -> String
@@ -120,8 +120,8 @@ encode (File properties) =
             ]
 
 
-write : { contents : String, suggestedFilename : String } -> Task WriteError ()
-write { contents, suggestedFilename } =
+save : { contents : String, suggestedFilename : String } -> Task SaveError ()
+save { contents, suggestedFilename } =
     let
         encoded =
             Encode.object
@@ -133,20 +133,20 @@ write { contents, suggestedFilename } =
             if response.status.code == 200 then
                 Ok ()
             else
-                Err "Failed to write file"
+                Err "Failed to save file"
 
         request =
             Http.request
                 { method = "PUT"
                 , headers = []
-                , url = Local.url "file/write"
+                , url = Local.url "file/save"
                 , body = Http.jsonBody encoded
                 , expect = Http.expectStringResponse handleResponse
                 , timeout = Nothing
                 , withCredentials = False
                 }
     in
-        Http.toTask request |> Task.mapError (always WriteError)
+        Http.toTask request |> Task.mapError (always SaveError)
 
 
 selectedFiles : Decoder (List File)
