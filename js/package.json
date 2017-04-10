@@ -1,0 +1,30 @@
+{
+  "name": "@kintail/local",
+  "version": "0.1.0",
+  "description": "Access local files, databases and multithreaded workers in Elm",
+  "main": "kintail-local.js",
+  "scripts": {
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kintail/local.git"
+  },
+  "keywords": [
+    "elm",
+    "service",
+    "worker",
+    "local",
+    "file",
+    "kintail"
+  ],
+  "author": "Ian Mackenzie <ian.e.mackenzie@gmail.com>",
+  "license": "MPL-2.0",
+  "bugs": {
+    "url": "https://github.com/kintail/local/issues"
+  },
+  "homepage": "https://github.com/kintail/local#readme",
+  "devDependencies": {
+    "webpack": "^2.3.3"
+  }
+}
