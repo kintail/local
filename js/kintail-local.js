@@ -63,7 +63,7 @@ if ('window' in self) {
     function saveFile(body) {
       var parameters = JSON.parse(body)
       var blob = new Blob([parameters.contents], {type: "text/plain; charset=utf-8"});
-      FileSaver.saveAs(blob, parameters.suggestedFilename);
+      FileSaver.saveAs(blob, parameters.filename);
       return ok("")
     }
 

@@ -9,7 +9,7 @@ module Kintail.Local.File
         , mimeType
         , chooser
         , read
-        , save
+        , saveAs
         , selectedFiles
         )
 
@@ -120,13 +120,13 @@ encode (File properties) =
             ]
 
 
-save : { contents : String, suggestedFilename : String } -> Task SaveError ()
-save { contents, suggestedFilename } =
+saveAs : String -> String -> Task SaveError ()
+saveAs filename contents =
     let
         encoded =
             Encode.object
-                [ ( "contents", Encode.string contents )
-                , ( "suggestedFilename", Encode.string suggestedFilename )
+                [ ( "filename", Encode.string filename )
+                , ( "contents", Encode.string contents )
                 ]
 
         handleResponse response =

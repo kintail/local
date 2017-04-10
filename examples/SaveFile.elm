@@ -21,6 +21,11 @@ view model =
     Html.button [ Events.onClick SaveFile ] [ Html.text "Save file" ]
 
 
+saveTask : Task File.SaveError ()
+saveTask =
+    File.saveAs "contents.txt" "One line\nAnother line\n"
+
+
 handleResponse : Result File.SaveError () -> Msg
 handleResponse result =
     case result of
@@ -35,13 +40,7 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update message () =
     case message of
         SaveFile ->
-            ( ()
-            , File.save
-                { contents = "One line\nAnother line"
-                , suggestedFilename = "contents.txt"
-                }
-                |> Task.attempt handleResponse
-            )
+            ( (), Task.attempt handleResponse saveTask )
 
         FileSaved ->
             ( (), Cmd.none )
